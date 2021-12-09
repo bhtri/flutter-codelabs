@@ -15,59 +15,22 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'model/products_repository.dart';
 import 'model/product.dart';
 import 'supplemental/asymmetric_view.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final Category category;
+  const HomePage({
+    Key? key,
+    this.category = Category.all,
+  }) : super(key: key);
 
-  // TODO: Make a collection of cards (102)
-  // TODO: Add a variable for Category (104)
   @override
   Widget build(BuildContext context) {
-    // TODO: Return an AsymmetricView (104)
-    // TODO: Pass Category variable to AsymmetricView (104)
-    return Scaffold(
-      appBar: AppBar(
-        // TODO: Add buttons and title (102)
-        leading: IconButton(
-            onPressed: () {
-              debugPrint('Menu button');
-            },
-            icon: const Icon(
-              Icons.menu,
-              semanticLabel: 'menu',
-            )),
-        title: const Text('SHRINE'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              debugPrint('Search button');
-            },
-            icon: const Icon(
-              Icons.search,
-              semanticLabel: 'search',
-            ),
-          ),
-          IconButton(
-            onPressed: () {
-              debugPrint('Filter button');
-            },
-            icon: const Icon(
-              Icons.tune,
-              semanticLabel: 'filter',
-            ),
-          )
-        ],
-        systemOverlayStyle: SystemUiOverlayStyle.light,
-      ),
-      body: AsymmetricView(
-        products: ProductsRepository.loadProducts(Category.all),
-      ),
-      resizeToAvoidBottomInset: false,
+    return AsymmetricView(
+      products: ProductsRepository.loadProducts(Category.accessories),
     );
   }
 
