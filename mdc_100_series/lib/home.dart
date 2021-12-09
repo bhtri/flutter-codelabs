@@ -15,9 +15,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'model/products_repository.dart';
 import 'model/product.dart';
+import 'supplemental/asymmetric_view.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -51,20 +53,19 @@ class HomePage extends StatelessWidget {
             ),
           ),
           IconButton(
-              onPressed: () {
-                debugPrint('Filter button');
-              },
-              icon: const Icon(
-                Icons.tune,
-                semanticLabel: 'filter',
-              ))
+            onPressed: () {
+              debugPrint('Filter button');
+            },
+            icon: const Icon(
+              Icons.tune,
+              semanticLabel: 'filter',
+            ),
+          )
         ],
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
-      body: GridView.count(
-        crossAxisCount: 2,
-        padding: const EdgeInsets.all(16.0),
-        childAspectRatio: 9.0 / 9.0,
-        children: _buildGridCards(context),
+      body: AsymmetricView(
+        products: ProductsRepository.loadProducts(Category.all),
       ),
       resizeToAvoidBottomInset: false,
     );
@@ -84,10 +85,9 @@ class HomePage extends StatelessWidget {
     return products
         .map((product) => Card(
               clipBehavior: Clip.antiAlias,
-              // TODO: Adjust card heights (103)
+              elevation: 0.0,
               child: Column(
-                // TODO: Center items on the card (103)
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   AspectRatio(
                     aspectRatio: 22.0 / 11.0,
@@ -102,17 +102,19 @@ class HomePage extends StatelessWidget {
                       padding:
                           const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 18.0),
                       child: Column(
-                        // TODO: Align labels to the bottom and center (103)
+                        mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         // TODO: Change innermost Column (103)
                         children: [
                           // TODO: Handle overflowing labels (103)
                           Text(
                             product.name,
-                            style: theme.textTheme.headline6,
+                            style: theme.textTheme.button,
+                            softWrap: false,
+                            overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
-                          const SizedBox(height: 10.0),
+                          const SizedBox(height: 4.0),
                           Text(
                             formatter.format(product.price),
                             style: theme.textTheme.subtitle2,
